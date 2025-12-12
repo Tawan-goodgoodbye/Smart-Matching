@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPro: AI-Driven Career Platform Infographic</title>
+   
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+   
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+
+    <!-- Custom Config & Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B1120',    // Deep Navy (Background)
+                            primary: '#3B82F6', // Vibrant Blue
+                            accent: '#06B6D4',  // Cyan/Teal (Tech feel)
+                            danger: '#EF4444',  // Red (for Problem stats)
+                            success: '#10B981', // Green (for Solutions)
+                            light: '#F3F4F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <style>
+        /* Chart Container Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Default height */
+            max-height: 400px;
+        }
+
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+       
+        .plotly-container {
+            width: 100%;
+            height: 450px;
+            max-width: 100%;
+        }
+
+
+        body {
+            background-color: #0B1120; /* brand-dark */
+            color: #F3F4F6;
+        }
+
+
+        /* Utility for Diagram Boxes */
+        .diagram-box {
+            border: 2px solid #3B82F6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+    </style>
+
+
+    <!--
+    PALETTE SELECTION:
+    "Energetic & Playful" / "Brilliant Blues"
+    Focusing on high contrast Neon Blue/Cyan against Dark backgrounds to emphasize the "High Tech/AI" nature of the project.
+    Hex Codes: #0B1120 (Bg), #3B82F6 (Primary), #06B6D4 (Accent)
+    -->
+   
+    <!--
+    NARRATIVE PLAN:
+    1. Hook: The Skills Mismatch Crisis (Data: 89% Rejection).
+    2. Solution: The Golden Triangle (Visualizing the Math).
+    3. Market: Growth & Competition.
+    4. Business: Financial Viability.
+    -->
+</head>
+<body class="antialiased">
+
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-blue-900 to-brand-dark py-12 px-6 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-4 tracking-tight">
+                UniPro
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light">
+                Bridging the Gap Between Academia & Industry via <span class="text-cyan-400 font-semibold">Differential Geometry</span> & <span class="text-cyan-400 font-semibold">AI Optimization</span>.
+            </p>
+        </div>
+    </header>
+
+
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+
+        <!-- SECTION 1: THE PAIN POINT -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white mb-4">The Crisis: The "Skills Mismatch"</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Thailand faces a critical labor paradox. Despite a surplus of graduates, employers cannot find qualified talent. The data reveals a staggering disconnect.
+                </p>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card 1: Employer Sentiment -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-2">Employer Rejection Rate</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        A massive 89% of employers avoid hiring fresh graduates specifically due to a lack of practical skills and experience.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="employerChart"></canvas>
+                    </div>
+                </div>
+
+
+                <!-- Card 2: Unemployment Reality -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-semibold text-red-400 mb-2">Unemployment Disparity</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        While the national unemployment rate is low, the rate for recent graduates is more than double, highlighting the specific struggle of Gen Z.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="unemploymentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: THE TECH (GOLDEN TRIANGLE) -->
+        <section class="bg-gray-900 rounded-2xl p-8 border border-blue-900/50 shadow-2xl">
+            <div class="text-center mb-10">
+                <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Core Innovation</span>
+                <h2 class="text-3xl font-bold text-white mt-4 mb-4">The "Success Manifold" Architecture</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">
+                    UniPro rejects simple keyword matching. We utilize <strong>Differential Geometry</strong> to treat students as vectors in a high-dimensional space, projecting them onto a "Success Manifold" to find their optimal career path (Geodesic Distance).
+                </p>
+            </div>
+
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <!-- 3D Visualization -->
+                <div class="lg:col-span-2 bg-black rounded-xl border border-gray-700 overflow-hidden">
+                    <div id="manifoldPlot" class="plotly-container"></div>
+                </div>
+
+
+                <!-- Tech Explanation -->
+                <div class="space-y-6">
+                    <div class="diagram-box border-l-4 border-l-cyan-400 bg-gray-800">
+                        <h4 class="text-lg font-bold text-white">1. Vector Space ($R^n$)</h4>
+                        <p class="text-sm text-gray-400 text-center mt-2">
+                            Students & Jobs are vectors. We calculate <span class="text-cyan-400">Cosine Similarity</span> ($\cos \theta$) to find semantic alignment, not just keywords.
+                        </p>
+                    </div>
+                    <div class="diagram-box border-l-4 border-l-purple-500 bg-gray-800">
+                        <h4 class="text-lg font-bold text-white">2. Manifold Projection</h4>
+                        <p class="text-sm text-gray-400 text-center mt-2">
+                            We project students onto the curved surface of "Successful Seniors" to calculate the <span class="text-purple-400">Geodesic (Shortest) Path</span> to employment.
+                        </p>
+                    </div>
+                    <div class="diagram-box border-l-4 border-l-green-500 bg-gray-800">
+                        <h4 class="text-lg font-bold text-white">3. Allocation (Gale-Shapley)</h4>
+                        <p class="text-sm text-gray-400 text-center mt-2">
+                            Game Theory ensures market stability, preventing congestion where one student gets all offers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: MARKET & COMPETITION -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white mb-4">Market Opportunity & Landscape</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    The Soft Skills training market is booming, expected to double by 2033. UniPro occupies a unique "High Innovation, Low Barrier" position.
+                </p>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Market Growth -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-semibold text-green-400 mb-2">Soft Skills Market Growth (TAM)</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Projected valuation of the Thailand soft skills training market (USD Millions).
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+
+
+                <!-- Competitive Matrix (HTML Grid Implementation) -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800 flex flex-col">
+                    <h3 class="text-xl font-semibold text-white mb-2">Competitive Landscape</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Strategic positioning against traditional job boards and niche tech players.
+                    </p>
+                   
+                    <div class="flex-grow relative bg-gray-800 rounded-lg p-4 grid grid-cols-2 grid-rows-2 gap-2 border border-gray-700">
+                        <!-- Labels -->
+                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-500 uppercase">Innovative</div>
+                        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-500 uppercase">Conventional</div>
+                        <div class="absolute left-2 top-1/2 transform -translate-y-1/2 -rotate-90 text-xs font-bold text-gray-500 uppercase">High Price</div>
+                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 rotate-90 text-xs font-bold text-gray-500 uppercase">Low Price</div>
+
+
+                        <!-- Quadrants -->
+                        <div class="bg-gray-900/50 rounded flex items-center justify-center p-2 border border-dashed border-gray-600">
+                            <div class="text-center">
+                                <span class="block font-bold text-gray-400 text-sm">Work Venture</span>
+                                <span class="text-xs text-gray-600">Niche Tech</span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-900/30 rounded flex items-center justify-center p-2 border-2 border-cyan-500 relative shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                            <div class="text-center">
+                                <span class="block font-bold text-cyan-400 text-lg">UniPro</span>
+                                <span class="text-xs text-cyan-200">AI Matching + Free</span>
+                                <span class="absolute -top-3 -right-3 text-2xl">🚀</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900/50 rounded flex items-center justify-center p-2 border border-dashed border-gray-600">
+                            <div class="text-center">
+                                <span class="block font-bold text-gray-400 text-sm">Jobs DB</span>
+                                <span class="text-xs text-gray-600">Traditional Listing</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900/50 rounded flex items-center justify-center p-2 border border-dashed border-gray-600">
+                            <div class="text-center">
+                                <span class="block font-bold text-gray-400 text-sm">Job Thai / EWE</span>
+                                <span class="text-xs text-gray-600">Mass Market</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: FINANCIALS -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white mb-4">Financial Feasibility</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Our B2B2C model (charging universities, free for students) ensures rapid adoption and profitability by Year 2.
+                </p>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Revenue vs Cost -->
+                <div class="md:col-span-2 bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-semibold text-white mb-2">3-Year Projection (THB)</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Rapid scaling through university partnerships drives revenue from 1.5M to 18M THB.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="financialChart"></canvas>
+                    </div>
+                </div>
+
+
+                <!-- Revenue Streams -->
+                <div class="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-semibold text-white mb-2">Revenue Model</h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Primary income via Tuition Sharing.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="revenuePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="text-center pt-10 pb-6 border-t border-gray-800 text-gray-500 text-sm">
+            <p>© 2025 UniPro Project. Student Code: 662415537.</p>
+            <p>Generated for Technical Proposal Presentation.</p>
+        </footer>
+
+
+    </main>
+
+
+    <!-- CHART IMPLEMENTATION SCRIPTS -->
+    <script>
+        // --- COMMON UTILS ---
+        Chart.defaults.color = '#9CA3AF';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+
+        // Label Wrapping Helper (Mandatory)
+        function wrapLabels(label) {
+            const MAX_LENGTH = 16;
+            if (typeof label !== 'string' || label.length <= MAX_LENGTH) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= MAX_LENGTH) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+
+        // Common Tooltip Config (Mandatory)
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+
+        // --- CHART 1: EMPLOYER REJECTION (DONUT) ---
+        // Goal: Inform/Compare
+        new Chart(document.getElementById('employerChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Avoid Hiring Fresh Grads', 'Willing to Hire'],
+                datasets: [{
+                    data: [89, 11],
+                    backgroundColor: ['#EF4444', '#10B981'], // Red vs Green
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true } },
+                    tooltip: commonTooltipConfig,
+                    title: { display: true, text: '89% Skills Gap Barrier' }
+                },
+                cutout: '70%'
+            }
+        });
+
+
+        // --- CHART 2: UNEMPLOYMENT (BAR) ---
+        // Goal: Compare
+        const unemploymentLabels = ['National Avg', 'Recent Grads'].map(wrapLabels);
+        new Chart(document.getElementById('unemploymentChart'), {
+            type: 'bar',
+            data: {
+                labels: unemploymentLabels,
+                datasets: [{
+                    label: 'Unemployment Rate (%)',
+                    data: [0.91, 2.0],
+                    backgroundColor: ['#3B82F6', '#EF4444'], // Blue vs Red
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#374151' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+
+        // --- CHART 3: MARKET GROWTH (LINE) ---
+        // Goal: Change
+        new Chart(document.getElementById('marketChart'), {
+            type: 'line',
+            data: {
+                labels: ['2024', '2026', '2028', '2030', '2033'],
+                datasets: [{
+                    label: 'Market Size (USD Millions)',
+                    data: [209.7, 260.5, 320.1, 410.8, 554.9],
+                    borderColor: '#10B981', // Success Green
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#fff',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltipConfig,
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { grid: { color: '#374151' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+
+        // --- CHART 4: FINANCIALS (STACKED BAR) ---
+        // Goal: Change/Compare
+        new Chart(document.getElementById('financialChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3'],
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: [1.5, 8.4, 18.0],
+                        backgroundColor: '#3B82F6' // Primary Blue
+                    },
+                    {
+                        label: 'Total Costs',
+                        data: [1.45, 6.55, 12.0], // (Fixed + Variable)
+                        backgroundColor: '#EF4444' // Danger Red
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltipConfig,
+                    title: { display: true, text: 'Revenue vs Costs (Million THB)' }
+                },
+                scales: {
+                    y: { grid: { color: '#374151' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+
+        // --- CHART 5: REVENUE STREAMS (PIE) ---
+        // Goal: Compare
+        const revLabels = ['Tuition Share (20%)', 'Company Partners'].map(wrapLabels);
+        new Chart(document.getElementById('revenuePieChart'), {
+            type: 'pie',
+            data: {
+                labels: revLabels,
+                datasets: [{
+                    data: [80, 20], // Approximate split based on model
+                    backgroundColor: ['#06B6D4', '#6366F1'], // Cyan vs Indigo
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+
+        // --- CHART 6: 3D MANIFOLD (PLOTLY) ---
+        // Goal: Relationships (Show the High Dimensional Concept)
+        // Simulating the "Swiss Roll" data points
+        function generateSwissRoll(n_samples = 500) {
+            let x = [], y = [], z = [], c = [];
+            for (let i = 0; i < n_samples; i++) {
+                let t = 1.5 * Math.PI * (1 + 2 * Math.random());
+                let h = 21 * Math.random();
+                x.push(t * Math.cos(t));
+                y.push(h);
+                z.push(t * Math.sin(t));
+                c.push(t); // Color by position along the curve (geodesic proxy)
+            }
+            return { x, y, z, c };
+        }
+
+
+        const srData = generateSwissRoll(800);
+       
+        // The "Success Manifold" Trace
+        const trace1 = {
+            x: srData.x,
+            y: srData.y,
+            z: srData.z,
+            mode: 'markers',
+            marker: {
+                size: 3,
+                color: srData.c,
+                colorscale: 'Viridis',
+                opacity: 0.6
+            },
+            type: 'scatter3d',
+            name: 'Success Manifold (Hired)'
+        };
+
+
+        // The "Projected Path" (Geodesic Simulation)
+        const trace2 = {
+            x: [srData.x[0], srData.x[10], srData.x[20]],
+            y: [srData.y[0], srData.y[10], srData.y[20]],
+            z: [srData.z[0], srData.z[10], srData.z[20]],
+            mode: 'lines+markers',
+            marker: { size: 6, color: 'red' },
+            line: { color: 'white', width: 4 },
+            type: 'scatter3d',
+            name: 'Geodesic Path (Student)'
+        };
+
+
+        const layout3d = {
+            title: { text: 'Visualizing the "Success Manifold"', font: { color: 'white' } },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            margin: { l: 0, r: 0, b: 0, t: 30 },
+            showlegend: true,
+            legend: { x: 0, y: 1, font: { color: 'white' } },
+            scene: {
+                xaxis: { title: 'Hard Skills', gridcolor: '#374151', zerolinecolor: '#374151', showbackground: false },
+                yaxis: { title: 'Soft Skills', gridcolor: '#374151', zerolinecolor: '#374151', showbackground: false },
+                zaxis: { title: 'Experience', gridcolor: '#374151', zerolinecolor: '#374151', showbackground: false },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.5 } }
+            }
+        };
+
+
+        Plotly.newPlot('manifoldPlot', [trace1, trace2], layout3d, {responsive: true, displayModeBar: false});
+
+
+    </script>
+</body>
+</html>
+
